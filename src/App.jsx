@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AlertCircle, Wallet, Check } from 'lucide-react';
 
-export default function PhantomMultiSigDApp() {
+export default function App() {
   const [wallet, setWallet] = useState(null);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
@@ -12,13 +12,40 @@ export default function PhantomMultiSigDApp() {
 
   const REQUIRED_SIGNER = 'AeNzsm4mMEmzogE9fbZ9MHz8x5S3F2iyJpgiVykKFkjJ';
 
+  // Listen for Dynamic wallet connection
+  useEffect(() => {
+    const checkDynamicWallet = () => {
+      // Check if Dynamic SDK is loaded and wallet is connected
+      if (window.dynamicWallet?.primaryWallet) {
+        const walletAddress = window.dynamicWallet.primaryWallet.address;
+        setWallet(walletAddress);
+        setStatus('Wallet connected via Dynamic!');
+      }
+    };
+
+    // Check periodically for Dynamic wallet
+    const interval = setInterval(checkDynamicWallet, 1000);
+    checkDynamicWallet(); // Check immediately
+
+    return () => clearInterval(interval);
+  }, []);
+
   const connectWallet = async () => {
     try {
       setError('');
       setStatus('');
       
+      // Check if Dynamic SDK is available
+      if (window.dynamicWallet?.primaryWallet) {
+        const walletAddress = window.dynamicWallet.primaryWallet.address;
+        setWallet(walletAddress);
+        setStatus('Wallet connected successfully!');
+        return;
+      }
+
+      // Fallback to Phantom if Dynamic not available
       if (!window.solana || !window.solana.isPhantom) {
-        setError('Phantom wallet not found. Please install Phantom.');
+        setError('Please click the "Connect Wallet" button to use Dynamic wallet integration, or install Phantom wallet.');
         return;
       }
 
@@ -36,8 +63,19 @@ export default function PhantomMultiSigDApp() {
       setStatus('Preparing transaction...');
       setSignature('');
 
-      if (!window.solana || !wallet) {
+      if (!wallet) {
         setError('Please connect your wallet first');
+        return;
+      }
+
+      // Get the appropriate wallet provider
+      let provider = null;
+      if (window.dynamicWallet?.primaryWallet?.connector) {
+        provider = window.dynamicWallet.primaryWallet.connector;
+      } else if (window.solana?.isPhantom) {
+        provider = window.solana;
+      } else {
+        setError('No wallet provider found');
         return;
       }
 
@@ -70,25 +108,19 @@ export default function PhantomMultiSigDApp() {
       
       transaction.add(memoInstruction);
 
-      setStatus('Waiting for signature in Phantom...');
+      setStatus('Waiting for signature in wallet...');
       
-      // Request signature from Phantom
-      const signed = await window.solana.signTransaction(transaction);
+      // Request signature from wallet
+      let signed;
+      if (provider.signTransaction) {
+        signed = await provider.signTransaction(transaction);
+      } else {
+        setError('Wallet does not support transaction signing');
+        return;
+      }
       
       console.log('Signed transaction:', signed);
       console.log('All signatures:', signed.signatures);
-      
-      // Get transaction signature (txid) - it's already in the transaction
-      // The signature is the first signature in base58 format
-      const txSig = signed.signatures[0] && signed.signatures[0].signature 
-        ? Buffer.from(signed.signatures[0].signature).toString('base64')
-        : 'pending';
-      
-      console.log('Transaction signature:', txSig);
-      
-      // For explorer, we need the actual transaction hash
-      // Since the transaction hasn't been sent, we'll use a placeholder
-      // In a real scenario, you'd get this after sending the transaction
       
       // Extract signature
       const sig = signed.signatures.find(s => 
@@ -174,13 +206,18 @@ export default function PhantomMultiSigDApp() {
             </p>
           </div>
         ) : !wallet ? (
-          <button
-            onClick={connectWallet}
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-          >
-            <Wallet className="w-5 h-5" />
-            Connect Phantom Wallet
-          </button>
+          <div className="space-y-4">
+            <button
+              onClick={connectWallet}
+              className="connect-button w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <Wallet className="w-5 h-5" />
+              Connect Wallet
+            </button>
+            <p className="text-xs text-gray-500 text-center">
+              This button will trigger the Dynamic wallet modal
+            </p>
+          </div>
         ) : (
           <div className="space-y-4">
             <div className="p-4 bg-gray-50 rounded-lg">
@@ -234,8 +271,6 @@ export default function PhantomMultiSigDApp() {
           </p>
         </div>
       </div>
-
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.87.6/solana-web3.min.js"></script>
     </div>
   );
 }
