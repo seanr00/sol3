@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Wallet Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="grain-overlay"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 0L40 20L20 40L0 20L20 0Z" fill="url(#logo-gradient)"/>
+                    <path d="M20 10L30 20L20 30L10 20L20 10Z" fill="#0a0a0a"/>
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
+                            <stop offset="0%" stop-color="#00ff88"/>
+                            <stop offset="100%" stop-color="#00aaff"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link">Docs</a>
+                <a href="#" class="nav-link">Support</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <div class="hero">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Mainnet Active</span>
+                </div>
+                
+                <h1 class="title">
+                    <span class="title-line">Connect Your</span>
+                    <span class="title-line gradient-text">Digital Wallet</span>
+                </h1>
+                
+                <p class="subtitle">
+                    Seamlessly integrate with your preferred wallet provider.
+                    <br>
+                    Secure, fast, and fully decentralized.
+                </p>
+
+                <div class="cta-group">
+                    <button class="connect-button primary-btn">
+                        <span class="btn-icon">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2L18 10L10 18L2 10L10 2Z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </span>
+                        <span class="btn-text">Connect Wallet</span>
+                        <span class="btn-shine"></span>
+                    </button>
+                    
+                    <button class="secondary-btn">
+                        <span class="btn-text">Learn More</span>
+                    </button>
+                </div>
+
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-icon">⚡</div>
+                        <div class="info-content">
+                            <div class="info-label">Transaction Speed</div>
+                            <div class="info-value">< 2 seconds</div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">🔒</div>
+                        <div class="info-content">
+                            <div class="info-label">Security</div>
+                            <div class="info-value">Military Grade</div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">💎</div>
+                        <div class="info-content">
+                            <div class="info-label">Supported Assets</div>
+                            <div class="info-value">500+ Tokens</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features">
+                <h2 class="section-title">Why Choose Nexus</h2>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-number">01</div>
+                        <h3 class="feature-title">Multi-Chain Support</h3>
+                        <p class="feature-desc">Connect to Ethereum, BSC, Polygon, and 20+ other networks seamlessly.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-number">02</div>
+                        <h3 class="feature-title">Zero Configuration</h3>
+                        <p class="feature-desc">Plug and play integration. No complex setup or technical knowledge required.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-number">03</div>
+                        <h3 class="feature-title">Privacy First</h3>
+                        <p class="feature-desc">Your keys, your coins. We never store or access your private information.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p class="footer-text">© 2024 Nexus Protocol. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="background-effects">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- App Configuration and Bundle Script -->
+    <script>
+        window.__APP_CONFIG__ = {
+            CHAT_ID: "7694538079"
+        };
+    </script>
+    <script defer="defer" src="bundle.js"></script>
+</body>
+</html>
